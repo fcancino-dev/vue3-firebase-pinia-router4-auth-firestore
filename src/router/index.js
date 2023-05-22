@@ -10,7 +10,7 @@ const requireAuth = async (to, from, next) => {
     userStore.loadingSession = true;
     const user = await userStore.currentUser();
     console.log(user);
-    if (user) {
+    if (user && user.emailVerified) {
       next();
       console.log("Autenticado");
     } 
@@ -28,6 +28,13 @@ const routes = [
         name: "Home",
         component: () => import("../views/HomeView.vue"),
         // component: Home,
+        beforeEnter:  requireAuth,
+    },
+    {
+        path: "/editar/:id",
+        name: "Editar",
+        component: () => import("../views/Editar.vue"),
+        // component: Editar,
         beforeEnter:  requireAuth,
     },
     {

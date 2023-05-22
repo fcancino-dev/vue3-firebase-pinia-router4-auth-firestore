@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification} from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import router from '../router';
+import { useDatabaseStore } from './database';
 
 //PINIA 
 export const useUserStore = defineStore('user',{
@@ -14,30 +15,14 @@ export const useUserStore = defineStore('user',{
     }),
     actions: {
         // REGISTER SIN VERIFICACION DE EMAIL.
-        async registerUser(email, password) {
-            this.loading = true;
-            try {
-                const {user} = await createUserWithEmailAndPassword(auth, email, password); 
-                this.userData = {email: user.email, uid: user.uid, displayName: user.displayName};
-                router.push('/');
-                console.log('Usuario registrado');
-            } 
-            catch (error) {
-                console.log(error);
-            }
-            finally {
-                this.loading = false;
-            }
-        },
-
-        // REGISTER CON VERIFICACION DE EMAIL.
         // async registerUser(email, password) {
         //     this.loading = true;
         //     try {
-        //         await createUserWithEmailAndPassword(auth, email, password);
-        //         await sendEmailVerification(auth.currentUser);
-        //         router.push('/login');
-        //     }
+        //         const {user} = await createUserWithEmailAndPassword(auth, email, password); 
+        //         this.userData = {email: user.email, uid: user.uid, displayName: user.displayName};
+        //         router.push('/');
+        //         console.log('Usuario registrado');
+        //     } 
         //     catch (error) {
         //         console.log(error);
         //     }
@@ -45,6 +30,22 @@ export const useUserStore = defineStore('user',{
         //         this.loading = false;
         //     }
         // },
+
+        // REGISTER CON VERIFICACION DE EMAIL.
+        async registerUser(email, password) {
+            this.loading = true;
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                await sendEmailVerification(auth.currentUser);
+                router.push('/login');
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.loading = false;
+            }
+        },
 
         async loginUser(email, password) {
             this.loading = true;
@@ -63,6 +64,8 @@ export const useUserStore = defineStore('user',{
         },
 
         async signOutUser(){
+            const databaseStore = useDatabaseStore();
+            databaseStore.$reset();
             this.loading = true;
             try {
                 await signOut(auth);
@@ -90,6 +93,8 @@ export const useUserStore = defineStore('user',{
                     }
                     else {
                         this.userData = null;
+                        const databaseStore = useDatabaseStore();
+                        databaseStore.$reset();
                     }
                     resolve(user);
 

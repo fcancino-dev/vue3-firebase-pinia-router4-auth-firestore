@@ -18,14 +18,14 @@ const handleSubmit = async() => {
     if (!email.value || password.value.length < 6) {
         return alert('campo vacio');
     }
-    // try {
-    //     await userStore.registerUser(email.value, password.value);
-    //     alert("Verifica email")
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    try {
+        await userStore.registerUser(email.value, password.value);
+        alert("Verifica email")
+    } catch (error) {
+        console.log(error);
+    }
 
-    userStore.registerUser(email,value, password.value);
+    // userStore.registerUser(email.value, password.value);
 }
 
 
