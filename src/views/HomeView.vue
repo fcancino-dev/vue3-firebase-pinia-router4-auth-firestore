@@ -2,14 +2,11 @@
 import { useUserStore } from '../stores/user';
 import { computed } from 'vue';
 import { useDatabaseStore } from '../stores/database';
-import { ref } from 'vue';
+import { ref, onMounted, watch, } from 'vue';
 import { useRouter } from 'vue-router';
-// import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
 const databaseStore = useDatabaseStore();
-// const {userData} = storeToRefs(userStore);
-const data = computed(() => userStore.userData);
 
 databaseStore.getUrls();
 
@@ -22,11 +19,21 @@ const handleSubmit = () => {
 
 const router = useRouter();
 
+const displayName = computed(() => userStore.userData.displayName);
+const email = computed(() => userStore.userData.email);
+const uid = computed(() => userStore.userData.uid);
+
+// onMounted(() => {
+//   if (!userStore.userData) {
+//     router.push('/login'); // Redireccionar a la página de inicio de sesión si el usuario no está autenticado
+//   } 
+// });
+
 </script>
 
 <template>
     <main  class=" container mx-auto">
-        <div class=" text-2xl pb-2">Home</div>
+        <div class=" text-2xl pb-2 font-bold">Home</div>
         <!-- <div v-if="userStore.loading" class=" text-center pb-2">
             <p>Cargando informacion...</p>
         </div> -->
@@ -36,10 +43,16 @@ const router = useRouter();
             <!-- <el-button type="success">Agregar</el-button> -->
         </form>
         
-        <div v-if="data">
-            <p >Nombre de Usuario: <span class=" ">{{ data.displayname }}</span></p>
-            <p>Email: <span class=" italic">{{ data.email }}</span></p>
-            <p>Uid: <span class=" italic">{{ data.uid }}</span></p>
+        <div >
+            <p >Usuario: <span class=" italic font-semibold">{{ displayName }}</span></p>
+            <p>Email: <span class=" italic font-semibold">{{ email }}</span></p>
+            <p>Uid: <span class=" italic font-semibold">{{ uid }}</span></p>
+            <button 
+                class="bg-red-500 text-white rounded-md px-2 py-1" 
+                @click="router.push(`/editardisplayname/${displayName}`)"
+            >
+                Editar
+            </button>
         </div>
         <br>
         <div class="text-xl">Documentos</div>
@@ -68,15 +81,5 @@ const router = useRouter();
             
         </ul>
  
-
-
-
-
-
-
-
-
-
-        <!-- !!!Hola {{ userData }} -->
     </main>
 </template>

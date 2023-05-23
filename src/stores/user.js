@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification, updateProfile} from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import router from '../router';
 import { useDatabaseStore } from './database';
@@ -104,6 +104,22 @@ export const useUserStore = defineStore('user',{
                 unsubscribe();
             })
         },
+
+        async updateProfileUser(newName) {
+            this.loading = true;
+            try {
+                await updateProfile(auth.currentUser, {displayName: newName});
+                this.userData.displayName = newName;
+                console.log('Usuario actualizado');
+                router.push('/');
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.loading = false;
+            }
+        }
     },
 });
 
