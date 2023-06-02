@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "element-plus": "^2.3.4",
+    "async-validator": "^4.2.5",
+    "element-plus": "^2.3.5",
     "firebase": "^9.22.0",
     "nanoid": "^4.0.2",
     "pinia": "^2.0.36",

@@ -11,7 +11,10 @@ export const useDatabaseStore = defineStore('database', {
     }),
     actions: {
         async getUrls() {
-            if(this.documents.length > 0) return;
+            if(this.documents.length > 0){ 
+                return;
+            }
+
             this.loadingDoc = true;
             try {
                const q = query(collection(db, "urls"), 
@@ -51,7 +54,8 @@ export const useDatabaseStore = defineStore('database', {
                 console.log('Documento agregado');
             } 
             catch (error) {
-                console.log(error);
+                console.log(error.code);
+                return error.code;
             }
             finally {
                 
@@ -118,6 +122,7 @@ export const useDatabaseStore = defineStore('database', {
 
                 await deleteDoc(docRef);
                 this.documents = this.documents.filter((item) => item.id !== id);
+                
                 console.log('Documento eliminado');
             } 
             catch (error) {

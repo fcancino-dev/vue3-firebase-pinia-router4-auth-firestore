@@ -9,7 +9,7 @@ import { useDatabaseStore } from './database';
 export const useUserStore = defineStore('user',{
     state : () => ({
         userData : ref(null),
-        loading : ref(false),
+        loadingUser : ref(false),
         loadingSession: ref(false),
         
     }),
@@ -33,22 +33,23 @@ export const useUserStore = defineStore('user',{
 
         // REGISTER CON VERIFICACION DE EMAIL.
         async registerUser(email, password) {
-            this.loading = true;
+            this.loadingUser = true;
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 await sendEmailVerification(auth.currentUser);
                 router.push('/login');
             }
             catch (error) {
-                console.log(error);
+                console.log(error.code);
+                return error.code;
             }
             finally {
-                this.loading = false;
+                this.loadingUser = false;
             }
         },
 
         async loginUser(email, password) {
-            this.loading = true;
+            this.loadingUser = true;
             try {
                 const {user} = await signInWithEmailAndPassword(auth, email, password); 
                 this.userData = {email: user.email, uid: user.uid, displayName: user.displayName};
@@ -56,17 +57,18 @@ export const useUserStore = defineStore('user',{
                 console.log('Sesión iniciada');
             } 
             catch (error) {
-                console.log(error);
+                console.log(error.code);
+                return error.code;
             }
             finally {
-                this.loading = false;
+                this.loadingUser = false;
             }
         },
 
         async signOutUser(){
             const databaseStore = useDatabaseStore();
             databaseStore.$reset();
-            this.loading = true;
+            this.loadingUser = true;
             try {
                 await signOut(auth);
                 this.userData = null;
@@ -75,9 +77,10 @@ export const useUserStore = defineStore('user',{
             }
             catch (error) {
                 console.log(error);
+                
             }
             finally {
-                this.loading = false;
+                this.loadingUser = false;
             }
         },
 
@@ -106,7 +109,7 @@ export const useUserStore = defineStore('user',{
         },
 
         async updateProfileUser(newName) {
-            this.loading = true;
+            this.loadingUser = true;
             try {
                 await updateProfile(auth.currentUser, {displayName: newName});
                 this.userData.displayName = newName;
@@ -117,7 +120,7 @@ export const useUserStore = defineStore('user',{
                 console.log(error);
             }
             finally {
-                this.loading = false;
+                this.loadingUser = false;
             }
         }
     },
