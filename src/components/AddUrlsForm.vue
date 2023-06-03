@@ -16,7 +16,6 @@ const rules = {
             message: 'Por favor ingrese una URL valida', trigger: 'blur' },
     ],
 }
-
 const submitForm = async() => {
     const error = await databaseStore.addUrl(formModel.url);
     if (!error) {
@@ -32,9 +31,7 @@ const submitForm = async() => {
                             type: 'error'})
             break;
     }
-
 } 
-
 </script>
 
 <template>
@@ -45,7 +42,7 @@ const submitForm = async() => {
                     <el-input v-model="formModel.url" clearable placeholder="Ingrese URL" />
                 </div>
                 <div>
-                    <el-button type="primary" @click.prevent="submitForm" >Agregar</el-button>
+                    <el-button type="primary" @click="submitForm" >Agregar</el-button>
                 </div>
             </div>
         </el-form-item>

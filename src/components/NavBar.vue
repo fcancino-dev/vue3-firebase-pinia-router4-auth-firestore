@@ -87,9 +87,6 @@ const userStore = useUserStore();
             </div>
         </div>
     </nav>
-    
-        
-    
 </template>
 
 <style scoped>
@@ -100,14 +97,12 @@ const userStore = useUserStore();
 .hidden {
     display: none;
 }
-
 .logo {
   height: 2.5em;
   /* padding: 1.5em; */
   will-change: filter;
   transition: filter 300ms;
 }
-
 .logo:hover {
   filter: drop-shadow(0 0 2em #ffffff);
 }

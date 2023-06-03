@@ -2,9 +2,6 @@
 import { RouterView, RouterLink } from 'vue-router';
 import NavBar from '../components/NavBar.vue';
 import FooterView from '../components/FooterView.vue';
-import { useUserStore } from '../stores/user';
-
-const userStore = useUserStore();
 
 </script>
 

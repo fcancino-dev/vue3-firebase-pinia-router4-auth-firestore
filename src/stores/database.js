@@ -22,10 +22,8 @@ export const useDatabaseStore = defineStore('database', {
                );
                const querySnapshot = await getDocs(q);
                querySnapshot.forEach((doc) => {
-                    // console.log(doc.id, doc.data());
                     this.documents.push({
                         id: doc.id,
-                        // data: doc.data(),
                         ...doc.data(),
                     });
                });
@@ -46,7 +44,7 @@ export const useDatabaseStore = defineStore('database', {
                     user: auth.currentUser.uid,
                 }
                 const docRef = await addDoc(collection(db, "urls"), objetoDoc);
-                // console.log(docRef);
+                console.log(docRef);
                 this.documents.push({
                     ...objetoDoc,
                     id: docRef.id,

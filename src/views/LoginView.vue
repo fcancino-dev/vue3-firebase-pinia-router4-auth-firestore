@@ -6,23 +6,13 @@ import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore();
 
-// const email = ref('');
-// const password = ref('');
 const loadingButton = ref(false);
 const formRef = ref(null);
 const formModel = ref({
-    email: 'admn000002@gmail.com',
+    email: '',
     password: ''
 });
 
-// const emailRules = [
-//     { required: true, message: 'Por favor ingrese su email', trigger: 'blur' },
-//     { type: 'email', message: 'Por favor ingrese un email válido', trigger: 'blur' },
-// ];
-// const passwordRules = [
-//     { required: true, message: 'Por favor ingrese su contraseña', trigger: 'blur' },
-//     { min: 6, message: 'La contraseña debe tener al menos 6 caracteres', trigger: 'blur' },
-// ]
 const rules = {
     email: [
         { required: true, message: 'Por favor ingrese su email', trigger: 'blur' },
@@ -51,11 +41,9 @@ const submitForm = async () => {
 
             switch (error) {
                 case 'auth/user-not-found': 
-                    // alert('Usuario no encontrado') 
                     ElMessage.error('Usuario no encontrado.')               
                     break;
                 case 'auth/wrong-password':
-                    // alert('Contraseña incorrecta')
                     ElMessage.error('Contraseña incorrecta.')
                     break;
             

@@ -1,15 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "../stores/user";
 
-// import Home from "../views/HomeView.vue";
-// import Login from "../views/LoginView.vue";
-// import Register from "../views/RegisterView.vue";
-
 const requireAuth = async (to, from, next) => {
     const userStore = useUserStore();
     userStore.loadingSession = true;
     const user = await userStore.currentUser();
-    console.log(user);
+    // console.log(user);
     if (user && user.emailVerified) {
       next();
       console.log("Autenticado");
